@@ -1,0 +1,19 @@
+{
+  "name": "accmi-slider",
+  "version": "1.0.0",
+  "description": "simple slider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/accmi/accmi-slider.git"
+  },
+  "author": "accmi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/accmi/accmi-slider/issues"
+  },
+  "homepage": "https://github.com/accmi/accmi-slider#readme"
+}
