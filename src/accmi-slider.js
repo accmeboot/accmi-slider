@@ -5,7 +5,10 @@ function AccmiSlider(options = {}) {
       arrows: options.arrows !== undefined ? options.arrows : true,
       durration: options.durration !== undefined ? options.durration : 0.8,
       animation: options.animation !== undefined ? options.animation : 'ease',
-      visibileItem: options.visibileItem !== undefined ? options.visibileItem : 1
+      visibileItem: options.visibileItem !== undefined ? options.visibileItem : 1,
+      arrowLeftClass: options.arrowLeftClass !== undefined ? options.arrowLeftClass : 'prev',
+      arrowRightClass: options.arrowRightClass !== undefined ? options.arrowRightClass : 'next',
+      offsetRight: options.offsetRight !== undefined ? options.offsetRight : 0
     }
     this.settings = {
       main: document.querySelector('.accmi-slider'),
@@ -13,8 +16,6 @@ function AccmiSlider(options = {}) {
       position: 0,
       maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - 1
     }
-
-    this.proc = this.userOptions.visibileItem > 1 ? (this.userOptions.visibileItem-0.2) : 1;
 
     this.settings.wrapper.style.transition = `transform ${this.userOptions.durration}s ${this.userOptions.animation}`;
 
@@ -33,11 +34,20 @@ function AccmiSlider(options = {}) {
         
         if (index === this.settings.maxPosition) return;
 
-        element.style.marginRight = '10%';
-      }) 
+        element.style.paddingRight = `${this.userOptions.offsetRight}%`;
+      })
     }
 
+    this.proc = this.userOptions.visibileItem > 1 ? this.procInit() : 1;
     this.listners();
+  }
+
+  this.procInit = () => {
+    const element = this.settings.wrapper.children[0];
+    const elementWidth = element.offsetWidth;
+    const wrapperWidth = elementWidth * (this.settings.maxPosition+1);
+
+    return 100 / (wrapperWidth / elementWidth);
   }
 
   this.addArrows = () => {
@@ -49,6 +59,9 @@ function AccmiSlider(options = {}) {
 
     prev.setAttribute('class', 'accmi-slider-arrow-left');
     next.setAttribute('class', 'accmi-slider-arrow-right');
+
+    prev.classList.add(this.userOptions.arrowLeftClass);
+    next.classList.add(this.userOptions.arrowRightClass);
 
     this.settings.prev = prev;
     this.settings.next = next;
@@ -111,12 +124,12 @@ function AccmiSlider(options = {}) {
 
   this.nextSlide = () => {
     this.settings.position = this.settings.position >= this.settings.maxPosition ? 0 : ++this.settings.position;
-    this.settings.wrapper.style.transform = `translate3d(${-this.settings.position * 100  / this.proc}%, 0, 0)`;
+    this.settings.wrapper.style.transform = `translate3d(${-this.settings.position * this.proc}%, 0, 0)`;
   }
 
   this.prevSlide = () => {
     this.settings.position = this.settings.position <= 0 ? this.settings.position : --this.settings.position;
-    this.settings.wrapper.style.transform = `translate3d(${-this.settings.position * 100  / this.proc}%, 0, 0)`;
+    this.settings.wrapper.style.transform = `translate3d(${-this.settings.position * this.proc}%, 0, 0)`;
   }
 
   this.init();

@@ -7,5 +7,6 @@ new AccmiSlider({
   arrows: true,
   durration: 0.4,
   animation: 'ease',
-  visibileItem: 3
+  visibileItem: 3,
+  offsetRight: 5
 });
