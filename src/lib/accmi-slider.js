@@ -3,7 +3,7 @@ function AccmiSlider(options = {}) {
   this.init = () => {
     this.userOptions = {
       arrows: options.arrows !== undefined ? options.arrows : true,
-      durration: options.durration !== undefined ? options.durration : 0.8,
+      duration: options.duration !== undefined ? options.duration : 0.8,
       animation: options.animation !== undefined ? options.animation : 'ease',
       visibileItem: options.visibileItem !== undefined ? options.visibileItem : 1,
       arrowLeftClass: options.arrowLeftClass !== undefined ? options.arrowLeftClass : 'prev',
@@ -22,7 +22,7 @@ function AccmiSlider(options = {}) {
       maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
     }
 
-    this.settings.wrapper.style.transition = `transform ${this.userOptions.durration}s ${this.userOptions.animation}`;
+    this.settings.wrapper.style.transition = `transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
 
     this.widthContainer = this.settings.main.getBoundingClientRect().width;
     this.touches = {
@@ -116,8 +116,8 @@ function AccmiSlider(options = {}) {
 
     [].forEach.call(this.settings.wrapper.children, (element, index) => {
       if (this.userOptions.typeChange !== 'carousel') {
-        element.style.transition = `opacity ${this.userOptions.durration}s ${this.userOptions.animation}, 
-          transform ${this.userOptions.durration}s ${this.userOptions.animation}`;
+        element.style.transition = `opacity ${this.userOptions.duration}s ${this.userOptions.animation}, 
+          transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
         if (index === this.settings.position) {
           element.classList.add(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
 
@@ -143,7 +143,7 @@ function AccmiSlider(options = {}) {
     const x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
     const proc = 100 / (this.widthContainer / (this.touches.start - x)); 
 
-    this.settings.wrapper.style.transition = `transform ${this.userOptions.durration}s ${this.userOptions.animation}`;
+    this.settings.wrapper.style.transition = `transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
     this.touches.end = x;
     this.touches.endDetect = false;
 
@@ -185,7 +185,7 @@ function AccmiSlider(options = {}) {
       this.typeIn(this.settings.position);
     }
 
-    this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, (this.userOptions.durration * 1000)) : transform();
+    this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, (this.userOptions.duration * 1000)) : transform();
 
     this.changesDot();
     this.userOptions.beforeChange(this.settings.position);
@@ -211,7 +211,7 @@ function AccmiSlider(options = {}) {
       this.typeIn(this.settings.position);
     }
 
-    this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, this.userOptions.durration * 1000) : transform();
+    this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, this.userOptions.duration * 1000) : transform();
 
     this.changesDot();
     this.userOptions.beforeChange(this.settings.position);
