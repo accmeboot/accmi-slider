@@ -135,7 +135,7 @@ const configDev = {
 };
 
 const configProd = {
-  entry: [path.join(__dirname, 'src/lib/accmi-slider.js'), path.join(__dirname, 'src/lib/accmi-slider.scss')],
+  entry: './src/lib/accmi-slider.js',
 
   output: {
     path: path.join(__dirname, 'dist'),

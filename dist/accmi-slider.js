@@ -1,1 +1,272 @@
-!function(t){var e={};function s(i){if(e[i])return e[i].exports;var n=e[i]={i:i,l:!1,exports:{}};return t[i].call(n.exports,n,n.exports,s),n.l=!0,n.exports}s.m=t,s.c=e,s.d=function(t,e,i){s.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},s.r=function(t){Object.defineProperty(t,"__esModule",{value:!0})},s.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return s.d(e,"a",e),e},s.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},s.p="/",s(s.s=0)}([function(t,e,s){s(1),t.exports=s(2)},function(t,e,s){"use strict";function i(){var t=this,e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};this.init=function(){t.userOptions={arrows:void 0===e.arrows||e.arrows,duration:void 0!==e.duration?e.duration:.8,animation:void 0!==e.animation?e.animation:"ease",visibileItem:void 0!==e.visibileItem?e.visibileItem:1,arrowLeftClass:void 0!==e.arrowLeftClass?e.arrowLeftClass:"prev",arrowRightClass:void 0!==e.arrowRightClass?e.arrowRightClass:"next",offsetRight:void 0!==e.offsetRight?e.offsetRight:0,dots:void 0===e.dots||e.dots,beforeChange:void 0!==e.beforeChange?function(t){return e.beforeChange(t)}:function(){return null},infinity:void 0!==e.infinity&&e.infinity,typeChange:void 0!==e.typeChange?e.typeChange:"carousel"},t.settings={main:document.querySelector(".accmi-slider"),wrapper:document.querySelector(".accmi-slider-wrapper"),position:0,maxPosition:document.querySelector(".accmi-slider-wrapper").children.length-t.userOptions.visibileItem},t.settings.wrapper.style.transition="transform "+t.userOptions.duration+"s "+t.userOptions.animation,t.widthContainer=t.settings.main.getBoundingClientRect().width,t.touches={start:0,end:0,endDetect:!1,current:0},t.userOptions.arrows&&t.addArrows(),t.userOptions.visibileItem>1&&[].forEach.call(t.settings.wrapper.children,function(e,s){e.style.flex="0 0 "+(100/t.userOptions.visibileItem-5)+"%",s!==t.settings.wrapper.children.length-1&&(e.style.paddingRight=t.userOptions.offsetRight+"%")}),t.userOptions.dots&&t.addDots(),t.proc=t.userOptions.visibileItem>1?t.procInit():100,t.listners(),t.settings.wrapper.classList.add(t.userOptions.typeChange)},this.procInit=function(){var e=t.settings.wrapper.children[0].offsetWidth;return 100/(t.settings.wrapper.offsetWidth/e)},this.addDots=function(){for(var e=document.createElement("div"),s=t.settings.maxPosition+1,i=function(s){var i=document.createElement("div");e.appendChild(i),i.setAttribute("class","accmi-slider-dots-container-dot"),0===s&&i.classList.add("active"),i.addEventListener("click",function(){t.goToSlide(s)})},n=0;n<s;++n)i(n);e.setAttribute("class","accmi-slider-dots-container"),t.settings.main.appendChild(e),t.settings.dots=e},this.addArrows=function(){var e=document.createElement("div"),s=document.createElement("div");t.settings.main.appendChild(e),t.settings.main.appendChild(s),e.setAttribute("class","accmi-slider-arrow-left"),s.setAttribute("class","accmi-slider-arrow-right"),e.classList.add(t.userOptions.arrowLeftClass),s.classList.add(t.userOptions.arrowRightClass),t.settings.prev=e,t.settings.next=s},this.listners=function(){t.userOptions.arrows&&(t.settings.next.addEventListener("click",function(){t.nextSlide()}),t.settings.prev.addEventListener("click",function(){t.prevSlide()})),t.settings.wrapper.addEventListener("mousedown",t.touchStart),t.settings.wrapper.addEventListener("mousemove",t.touchMove),t.settings.wrapper.addEventListener("mouseup",t.touchEnd),[].forEach.call(t.settings.wrapper.children,function(e,s){if("carousel"!==t.userOptions.typeChange){if(e.style.transition="opacity "+t.userOptions.duration+"s "+t.userOptions.animation+", \n          transform "+t.userOptions.duration+"s "+t.userOptions.animation,s===t.settings.position)return void e.classList.add("fade"===t.userOptions.typeChange?"fadeIn":"zoomIn");e.classList.add("fade"===t.userOptions.typeChange?"fadeOut":"zoomOut")}e.addEventListener("touchstart",t.touchStart),e.addEventListener("touchend",t.touchEnd),e.addEventListener("touchmove",t.touchMove)})},this.touchStart=function(e){t.touches.start=void 0!==e.touches?e.touches[0].clientX:e.clientX,t.touches.endDetect=!0,t.settings.wrapper.style.transition="transform 0s "+t.userOptions.animation},this.touchEnd=function(e){var s=void 0!==e.changedTouches?e.changedTouches[0].clientX:e.clientX,i=100/(t.widthContainer/(t.touches.start-s));t.settings.wrapper.style.transition="transform "+t.userOptions.duration+"s "+t.userOptions.animation,t.touches.end=s,t.touches.endDetect=!1,Math.abs(i)>20?i>0?t.nextSlide():t.prevSlide():t.settings.wrapper.style.transform="translate3d("+-t.settings.position*t.proc+"%, 0, 0)"},this.touchMove=function(e){if(t.touches.endDetect){var s=void 0!==e.touches?e.touches[0].clientX:e.clientX,i=100/(t.widthContainer/(t.touches.start-s));t.touches.current=s,t.settings.wrapper.style.transform="translate3d("+(-t.settings.position*t.proc-i)+"%, 0, 0)"}},this.nextSlide=function(){t.typeOut(t.settings.position),t.userOptions.infinity?t.settings.position=t.settings.position>=t.settings.maxPosition?0:++t.settings.position:t.settings.position=t.settings.position>=t.settings.maxPosition?t.settings.position:++t.settings.position;var e=function(){t.settings.wrapper.style.transform="translate3d("+-t.settings.position*t.proc+"%, 0, 0)",t.typeIn(t.settings.position)};"carousel"!==t.userOptions.typeChange?setTimeout(e,1e3*t.userOptions.duration):e(),t.changesDot(),t.userOptions.beforeChange(t.settings.position)},this.prevSlide=function(){t.typeOut(t.settings.position),t.userOptions.infinity?t.settings.position=t.settings.position<=0?t.settings.maxPosition:--t.settings.position:t.settings.position=t.settings.position<=0?t.settings.position:--t.settings.position;var e=function(){t.settings.wrapper.style.transform="translate3d("+-t.settings.position*t.proc+"%, 0, 0)",t.typeIn(t.settings.position)};"carousel"!==t.userOptions.typeChange?setTimeout(e,1e3*t.userOptions.duration):e(),t.changesDot(),t.userOptions.beforeChange(t.settings.position)},this.goToSlide=function(e){t.settings.position=e,t.settings.wrapper.style.transform="translate3d("+-t.settings.position*t.proc+"%, 0, 0)",t.changesDot(),t.userOptions.beforeChange(e)},this.changesDot=function(){t.userOptions.dots&&[].forEach.call(t.settings.dots.children,function(e,s){t.settings.dots.children[s].classList.remove("active"),s===t.settings.position&&t.settings.dots.children[s].classList.add("active")})},this.typeIn=function(e){"carousel"!==t.userOptions.typeChange&&(t.settings.wrapper.children[e].classList.remove("fade"===t.userOptions.typeChange?"fadeOut":"zoomOut"),t.settings.wrapper.children[e].classList.add("fade"===t.userOptions.typeChange?"fadeIn":"zoomIn"))},this.typeOut=function(e){"carousel"!==t.userOptions.typeChange&&(t.settings.wrapper.children[e].classList.remove("fade"===t.userOptions.typeChange?"fadeIn":"zoomIn"),t.settings.wrapper.children[e].classList.add("fade"===t.userOptions.typeChange?"fadeOut":"zoomOut"))},this.init()}Object.defineProperty(e,"__esModule",{value:!0}),window.AccmiSlider=i,e.default=i},function(t,e,s){}]);
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function AccmiSlider() {
+  var _this = this;
+
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  this.init = function () {
+    _this.userOptions = {
+      arrows: options.arrows !== undefined ? options.arrows : true,
+      duration: options.duration !== undefined ? options.duration : 0.8,
+      animation: options.animation !== undefined ? options.animation : 'ease',
+      visibileItem: options.visibileItem !== undefined ? options.visibileItem : 1,
+      arrowLeftClass: options.arrowLeftClass !== undefined ? options.arrowLeftClass : 'prev',
+      arrowRightClass: options.arrowRightClass !== undefined ? options.arrowRightClass : 'next',
+      offsetRight: options.offsetRight !== undefined ? options.offsetRight : 0,
+      dots: options.dots !== undefined ? options.dots : true,
+      beforeChange: options.beforeChange !== undefined ? function (e) {
+        return options.beforeChange(e);
+      } : function () {
+        return null;
+      },
+      infinity: options.infinity !== undefined ? options.infinity : false,
+      typeChange: options.typeChange !== undefined ? options.typeChange : 'carousel'
+    };
+
+    _this.settings = {
+      main: document.querySelector('.accmi-slider'),
+      wrapper: document.querySelector('.accmi-slider-wrapper'),
+      position: 0,
+      maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - _this.userOptions.visibileItem
+    };
+
+    _this.settings.wrapper.style.transition = 'transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
+
+    _this.widthContainer = _this.settings.main.getBoundingClientRect().width;
+    _this.touches = {
+      start: 0,
+      end: 0,
+      endDetect: false,
+      current: 0
+    };
+
+    if (_this.userOptions.arrows) _this.addArrows();
+    if (_this.userOptions.visibileItem > 1) {
+      [].forEach.call(_this.settings.wrapper.children, function (element, index) {
+        element.style.flex = '0 0 ' + (100 / _this.userOptions.visibileItem - 5) + '%';
+
+        if (index === _this.settings.wrapper.children.length - 1) return;
+
+        element.style.paddingRight = _this.userOptions.offsetRight + '%';
+      });
+    }
+
+    if (_this.userOptions.dots) _this.addDots();
+    _this.proc = _this.userOptions.visibileItem > 1 ? _this.procInit() : 100;
+    _this.listners();
+    _this.settings.wrapper.classList.add(_this.userOptions.typeChange);
+  };
+
+  this.procInit = function () {
+    var element = _this.settings.wrapper.children[0];
+    var elementWidth = element.offsetWidth;
+    var wrapperWidth = _this.settings.wrapper.offsetWidth;
+
+    return 100 / (wrapperWidth / elementWidth);
+  };
+
+  this.addDots = function () {
+    var dotsContainer = document.createElement('div');
+    var countDots = _this.settings.maxPosition + 1;
+
+    var _loop = function _loop(i) {
+      var dot = document.createElement('div');
+
+      dotsContainer.appendChild(dot);
+      dot.setAttribute('class', 'accmi-slider-dots-container-dot');
+
+      if (i === 0) dot.classList.add('active');
+
+      dot.addEventListener('click', function () {
+        _this.goToSlide(i);
+      });
+    };
+
+    for (var i = 0; i < countDots; ++i) {
+      _loop(i);
+    }
+
+    dotsContainer.setAttribute('class', 'accmi-slider-dots-container');
+
+    _this.settings.main.appendChild(dotsContainer);
+
+    _this.settings.dots = dotsContainer;
+  };
+
+  this.addArrows = function () {
+    var prev = document.createElement('div');
+    var next = document.createElement('div');
+
+    _this.settings.main.appendChild(prev);
+    _this.settings.main.appendChild(next);
+
+    prev.setAttribute('class', 'accmi-slider-arrow-left');
+    next.setAttribute('class', 'accmi-slider-arrow-right');
+
+    prev.classList.add(_this.userOptions.arrowLeftClass);
+    next.classList.add(_this.userOptions.arrowRightClass);
+
+    _this.settings.prev = prev;
+    _this.settings.next = next;
+  };
+
+  this.listners = function () {
+
+    if (_this.userOptions.arrows) {
+      _this.settings.next.addEventListener('click', function () {
+        _this.nextSlide();
+      });
+
+      _this.settings.prev.addEventListener('click', function () {
+        _this.prevSlide();
+      });
+    }
+
+    _this.settings.wrapper.addEventListener('mousedown', _this.touchStart);
+    _this.settings.wrapper.addEventListener('mousemove', _this.touchMove);
+    _this.settings.wrapper.addEventListener('mouseup', _this.touchEnd);
+
+    [].forEach.call(_this.settings.wrapper.children, function (element, index) {
+      if (_this.userOptions.typeChange !== 'carousel') {
+        element.style.transition = 'opacity ' + _this.userOptions.duration + 's ' + _this.userOptions.animation + ', \n          transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
+        if (index === _this.settings.position) {
+          element.classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+
+          return;
+        }
+
+        element.classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+      }
+
+      element.addEventListener('touchstart', _this.touchStart);
+      element.addEventListener('touchend', _this.touchEnd);
+      element.addEventListener('touchmove', _this.touchMove);
+    });
+  };
+
+  this.touchStart = function (e) {
+    _this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
+    _this.touches.endDetect = true;
+    _this.settings.wrapper.style.transition = 'transform 0s ' + _this.userOptions.animation;
+  };
+
+  this.touchEnd = function (e) {
+    var x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
+    var proc = 100 / (_this.widthContainer / (_this.touches.start - x));
+
+    _this.settings.wrapper.style.transition = 'transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
+    _this.touches.end = x;
+    _this.touches.endDetect = false;
+
+    if (Math.abs(proc) > 20) {
+      proc > 0 ? _this.nextSlide() : _this.prevSlide();
+    } else {
+      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
+    }
+  };
+
+  this.touchMove = function (e) {
+    if (_this.touches.endDetect) {
+      var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
+      var proc = 100 / (_this.widthContainer / (_this.touches.start - x));
+
+      _this.touches.current = x;
+
+      _this.settings.wrapper.style.transform = 'translate3d(' + (-_this.settings.position * _this.proc + -proc) + '%, 0, 0)';
+    }
+  };
+
+  this.nextSlide = function () {
+    _this.typeOut(_this.settings.position);
+
+    var newPostition = function newPostition() {
+      if (_this.userOptions.infinity) {
+        _this.settings.position = _this.settings.position >= _this.settings.maxPosition ? 0 : ++_this.settings.position;
+
+        return;
+      }
+
+      _this.settings.position = _this.settings.position >= _this.settings.maxPosition ? _this.settings.position : ++_this.settings.position;
+    };
+
+    newPostition();
+
+    var transform = function transform() {
+      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
+      _this.typeIn(_this.settings.position);
+    };
+
+    _this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, _this.userOptions.duration * 1000) : transform();
+
+    _this.changesDot();
+    _this.userOptions.beforeChange(_this.settings.position);
+  };
+
+  this.prevSlide = function () {
+    _this.typeOut(_this.settings.position);
+
+    var newPostition = function newPostition() {
+      if (_this.userOptions.infinity) {
+        _this.settings.position = _this.settings.position <= 0 ? _this.settings.maxPosition : --_this.settings.position;
+
+        return;
+      }
+
+      _this.settings.position = _this.settings.position <= 0 ? _this.settings.position : --_this.settings.position;
+    };
+
+    newPostition();
+
+    var transform = function transform() {
+      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
+      _this.typeIn(_this.settings.position);
+    };
+
+    _this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, _this.userOptions.duration * 1000) : transform();
+
+    _this.changesDot();
+    _this.userOptions.beforeChange(_this.settings.position);
+  };
+
+  this.goToSlide = function (index) {
+    _this.settings.position = index;
+    _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
+
+    _this.changesDot();
+    _this.userOptions.beforeChange(index);
+  };
+
+  this.changesDot = function () {
+    if (!_this.userOptions.dots) return;
+
+    [].forEach.call(_this.settings.dots.children, function (element, index) {
+      _this.settings.dots.children[index].classList.remove('active');
+
+      if (index === _this.settings.position) _this.settings.dots.children[index].classList.add('active');
+    });
+  };
+
+  this.typeIn = function (index) {
+    if (_this.userOptions.typeChange === 'carousel') return;
+
+    _this.settings.wrapper.children[index].classList.remove(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+    _this.settings.wrapper.children[index].classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+  };
+
+  this.typeOut = function (index) {
+    if (_this.userOptions.typeChange === 'carousel') return;
+
+    _this.settings.wrapper.children[index].classList.remove(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+    _this.settings.wrapper.children[index].classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+  };
+
+  this.init();
+}
+
+window.AccmiSlider = AccmiSlider;
+
+exports.default = AccmiSlider;
