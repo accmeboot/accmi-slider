@@ -1,8 +1,14 @@
 {
   "name": "accmi-slider",
-  "version": "1.0.0",
-  "description": "simple slider",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "simple slider carousel",
+  "keywords": [
+    "slider",
+    "carousel",
+    "swipe-slider",
+    "carousel-list"
+  ],
+  "main": "dist/accmi-slider.js",
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server",
     "production": "NODE_ENV=production webpack",
@@ -13,7 +19,7 @@
     "url": "git+ssh://git@github.com/accmi/accmi-slider.git"
   },
   "author": "accmi <mishavjalv48@gmail.com>",
-  "license": "ISC",
+  "license": "MIT License",
   "bugs": {
     "url": "https://github.com/accmi/accmi-slider/issues"
   },
@@ -38,5 +44,8 @@
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0"
+  },
+  "dependencies": {
+    "npm": "^5.8.0"
   }
 }

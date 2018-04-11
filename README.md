@@ -4,6 +4,12 @@
 
 ##### Carousel with vanilla.js, mobile touch and desktop click.
 
+## Package Managers
+
+```npm
+npm i accmi-slider
+```
+
 ## Example
 ```html
     <link rel="stylesheet" href="../accmi-slider.css">
@@ -81,3 +87,9 @@ goToSlide(index)   | index = number slide
 ```sh
 npm run dev
 ```
+
+
+#### License
+Copyright (c) 2018 Vjalov Mikhail
+
+Licensed under the MIT license.
