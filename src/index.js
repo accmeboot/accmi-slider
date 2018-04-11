@@ -1,12 +1,15 @@
 import './index.scss';
-import './css/accmi-slider.scss';
+import './lib/accmi-slider.scss';
 
-import AccmiSlider from './accmi-slider';
+import AccmiSlider from './lib/accmi-slider';
 
-new AccmiSlider({
-  arrows: true,
-  durration: 0.4,
-  animation: 'ease',
-  visibileItem: 3,
-  offsetRight: 5
+const Slider = new AccmiSlider({
+  visibileItem: 1,
+  offsetRight: 0,
+  durration: 0.8,
+  dots: true,
+  infinity: true,
+  beforeChange: (e) => {
+    // console.log(e);
+  }
 });

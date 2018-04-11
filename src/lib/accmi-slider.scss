@@ -31,12 +31,28 @@
 
   &-wrapper {
     display: flex;
+    &.fade {
+      transition: none !important;
+    }
     &-item {
       flex: 0 0 100%;
+      transition: opacity 0.8s ease, transform 0.8s ease;
       img {
         width: 100%;
         display: block;
         pointer-events: none;
+      }
+      &.fadeIn {
+        opacity: 1;
+      }
+      &.fadeOut {
+        opacity: 0.2;
+      }
+      &.zoomIn {
+        transform: scale(1);
+      }
+      &.zoomOut {
+        transform: scale(0);
       }
     }
   }
@@ -55,36 +71,51 @@
     &:hover {
       opacity: 1;
     }
-    &:before, &:after {
+    &:before {
       content: '';
       position: absolute;
       left: 0;
       top: 0;
       height: 2px;
       width: 55%;
-      background-color: #000;
       opacity: 0.5;
+      font-family: 'Roboto', sans-serif;
     }
     &:before {
-      top: 31%;
-      left: 20%;
-      transform-origin: center;
-      transform: rotate(45deg);
-    }
-    &:after {
-      top: 69%;
-      left: 20%;
-      transform-origin: center;
-      transform: rotate(-45deg);
+      top: 30%;
+      left: 20%; 
     }
   }
 
   &-arrow-left {
     left: 0;
-    transform-origin: center;
-    transform: rotate(180deg);
+    &:before {
+      content: 'prev';
+    }
   }
   &-arrow-right {
     right: 0;
+    &:before {
+      content: 'next';
+    }
+  }
+
+  &-dots-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    &-dot {
+      width: 12px;
+      height: 12px;
+      background-color: #494b5270;
+      opacity: 0.3;
+      margin-right: 10px;
+      cursor: pointer;
+      &.active {
+        opacity: 1;
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
 'use strict';
-
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -19,7 +18,7 @@ const EXTRACT_STYLE_LOADER = [
   'sass-loader'
 ];
 
-const config = {
+const configDev = {
   context: path.join(__dirname, 'src'),
 
   entry: {
@@ -27,7 +26,7 @@ const config = {
   },
 
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     publicPath: '/'
   },
@@ -37,8 +36,8 @@ const config = {
     extensions: ['.web.js', '.js', '.jsx', '.json', '.scss', '.css']
   },
 
-  devtool: NODE_ENV === 'development' ? 'eval' : false,
-  mode: NODE_ENV === 'development' ? 'development' : 'production',
+  devtool: 'eval',
+  mode: 'development',
   target: 'web',
   node: {
     fs: 'empty'
@@ -58,7 +57,7 @@ const config = {
       },
       {
         test: /\.(scss|css)$/,
-        use: NODE_ENV === 'development' ? STYLE_LOADER : EXTRACT_STYLE_LOADER,
+        use: STYLE_LOADER,
         exclude: /node_modules/,
       },
       {
@@ -130,22 +129,91 @@ const config = {
       template: 'index.html',
       inject: 'body',
       hash: true
+    }),
+    new webpack.HotModuleReplacementPlugin()
+  ]
+};
+
+const configProd = {
+  entry: {
+    'accmi-slider': path.join(__dirname, 'src/lib/accmi-slider.js'),
+    'accmi-slider': path.join(__dirname, 'src/lib/accmi-slider.scss')
+  },
+
+  output: {
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/'
+  },
+
+  resolve: {
+    modules: [path.resolve('node_modules')],
+    extensions: ['.web.js', '.js', '.jsx', '.json', '.scss', '.css']
+  },
+
+  devtool: false,
+  mode: 'production',
+  target: 'web',
+  node: {
+    fs: 'empty'
+  },
+
+  module: {
+
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['env']
+        }
+      },
+      {
+        test: /\.(scss|css)$/,
+        use: EXTRACT_STYLE_LOADER,
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.(woff2|woff?|otf|ttf|eot|svg)$/,
+        loader: 'file-loader?name=[path][name].[ext]?[hash:base64:5]',
+      },
+      {
+        test: /\.(mp4|webm)$/,
+        loader: 'file-loader?name=[path][name].[ext]'
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              limit: 10000,
+              name:'[path][name].[ext]?[hash:base64:5]'
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    }),
+    new OptimizeCssAssetsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new UglifyJsPlugin({
+      sourceMap: false
     })
   ]
 };
 
-if (NODE_ENV === 'production') {
-  config.plugins.push(
-    new UglifyJsPlugin({
-      sourceMap: false
-    })
-  );
-}
-
-if (NODE_ENV === 'development') {
-  config.plugins.push(
-    new webpack.HotModuleReplacementPlugin()
-  )
-}
-
-module.exports = config;
+module.exports = NODE_ENV === 'development' ? configDev : configProd;
