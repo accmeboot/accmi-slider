@@ -1,7 +1,7 @@
 import './index.scss';
 import './lib/accmi-slider.scss';
 
-import AccmiSlider from '../dist/accmi-slider';
+import AccmiSlider from './lib/accmi-slider';
 
 const Slider = new AccmiSlider({
   visibileItem: 3,
@@ -14,4 +14,4 @@ const Slider = new AccmiSlider({
   beforeChange: (e) => {
     // console.log(e);
   }
-});
+}, document.querySelector('.accmi-slider'));

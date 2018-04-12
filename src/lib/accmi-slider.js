@@ -1,5 +1,5 @@
 export class AccmiSlider {
-  constructor(options = {}) {
+  constructor(options = {}, container) {
     this.userOptions = {
       arrows: options.arrows !== undefined ? options.arrows : true,
       duration: options.duration !== undefined ? options.duration : 0.8,
@@ -17,10 +17,10 @@ export class AccmiSlider {
     }
 
     this.settings = {
-      main: document.querySelector('.accmi-slider'),
-      wrapper: document.querySelector('.accmi-slider-wrapper'),
+      main: container,
+      wrapper: container.querySelector('.accmi-slider-wrapper'),
       position: 0,
-      maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
+      maxPosition: container.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
     }
 
     this.settings.wrapper.style.transition = `transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
