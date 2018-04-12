@@ -2,8 +2,6 @@
 
 ## Carousel with vanilla.js
 
-#### v 0.0.3
-
 ##### Carousel with vanilla.js, mobile touch and desktop click.
 
 ## Package Managers
