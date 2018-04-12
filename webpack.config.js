@@ -135,7 +135,7 @@ const configDev = {
 };
 
 const configProd = {
-  entry: './src/lib/accmi-slider.js',
+  entry: ['./src/lib/accmi-slider.js', './src/lib/accmi-slider.scss'],
 
   output: {
     path: path.join(__dirname, 'dist'),
@@ -161,10 +161,7 @@ const configProd = {
         enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['env']
-        }
+        loader: 'babel-loader'
       },
       {
         test: /\.(scss|css)$/,

@@ -9,6 +9,8 @@ const Slider = new AccmiSlider({
   duration: 0.8,
   dots: true,
   infinity: true,
+  arrowLeftContent: '<div>prev</div>',
+  arrowRightContent: '<div>next</div>',
   beforeChange: (e) => {
     // console.log(e);
   }

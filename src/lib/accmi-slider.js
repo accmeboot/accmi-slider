@@ -11,7 +11,9 @@ export class AccmiSlider {
       dots: options.dots !== undefined ? options.dots : true,
       beforeChange: options.beforeChange !== undefined ? (e) => options.beforeChange(e) : () => null,
       infinity: options.infinity !== undefined ? options.infinity : false,
-      typeChange: options.typeChange !== undefined ? options.typeChange : 'carousel'
+      typeChange: options.typeChange !== undefined ? options.typeChange : 'carousel',
+      arrowLeftContent: options.arrowLeftContent !== undefined ? options.arrowLeftContent : '<span>prev</span>',
+      arrowRightContent: options.arrowRightContent !== undefined ? options.arrowRightContent : '<span>next</span>',
     }
 
     this.settings = {
@@ -89,6 +91,9 @@ export class AccmiSlider {
 
     prev.setAttribute('class', 'accmi-slider-arrow-left');
     next.setAttribute('class', 'accmi-slider-arrow-right');
+
+    prev.innerHTML = this.userOptions.arrowLeftContent;
+    next.innerHTML = this.userOptions.arrowRightContent;
 
     prev.classList.add(this.userOptions.arrowLeftClass);
     next.classList.add(this.userOptions.arrowRightClass);

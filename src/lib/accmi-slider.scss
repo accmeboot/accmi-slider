@@ -68,36 +68,23 @@
     z-index: 1;
     cursor: pointer;
     transition: opacity .3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       opacity: 1;
     }
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 2px;
-      width: 55%;
+    .span {
       opacity: 0.5;
       font-family: 'Roboto', sans-serif;
-    }
-    &:before {
-      top: 30%;
-      left: 20%; 
     }
   }
 
   &-arrow-left {
     left: 0;
-    &:before {
-      content: 'prev';
-    }
   }
   &-arrow-right {
     right: 0;
-    &:before {
-      content: 'next';
-    }
   }
 
   &-dots-container {

@@ -67,6 +67,8 @@ animation       | string  | ease     | animation-timing-function
 visibileItem    | number  | 1        | count visible elements
 arrowLeftClass  | string  | prev     | 
 arrowRightClass | string  | next     |
+arrowLeftContent| string  | <span>prev</span> | content from arrow container
+arrowRightContent| string  | <span>next</span> | content from arrow container
 offsetRight     | number  | 0        | padding-right in % for element
 dots            | boolean | true     | enable dots (pagination)
 beforeChange    | void    | ()=>null | callback before sliding
