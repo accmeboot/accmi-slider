@@ -1,6 +1,5 @@
-'use strict';
-function AccmiSlider(options = {}) {
-  this.init = () => {
+export class AccmiSlider {
+  constructor(options = {}) {
     this.userOptions = {
       arrows: options.arrows !== undefined ? options.arrows : true,
       duration: options.duration !== undefined ? options.duration : 0.8,
@@ -36,10 +35,10 @@ function AccmiSlider(options = {}) {
     if (this.userOptions.visibileItem > 1) {
       [].forEach.call(this.settings.wrapper.children, (element, index) => {
         element.style.flex = `0 0 ${(100/this.userOptions.visibileItem)-5}%`;
-        
+
         if (index === this.settings.wrapper.children.length-1) return;
 
-        element.style.paddingRight = `${this.userOptions.offsetRight}%`;
+        element.style.marginRight = `${this.userOptions.offsetRight}%`;
       })
     }
 
@@ -49,15 +48,15 @@ function AccmiSlider(options = {}) {
     this.settings.wrapper.classList.add(this.userOptions.typeChange);
   }
 
-  this.procInit = () => {
+  procInit() {
     const element = this.settings.wrapper.children[0];
-    const elementWidth = element.offsetWidth;
+    const elementWidth = element.offsetWidth + parseInt(getComputedStyle(element).marginRight);
     const wrapperWidth = this.settings.wrapper.offsetWidth;
 
     return 100 / (wrapperWidth / elementWidth);
-  }
+  };
 
-  this.addDots = () => {
+  addDots() {
     const dotsContainer = document.createElement('div');
     const countDots = this.settings.maxPosition + 1;
 
@@ -81,7 +80,7 @@ function AccmiSlider(options = {}) {
     this.settings.dots = dotsContainer;
   }
 
-  this.addArrows = () => {
+  addArrows() {
     const prev = document.createElement('div');
     const next = document.createElement('div');
 
@@ -98,26 +97,25 @@ function AccmiSlider(options = {}) {
     this.settings.next = next;
   }
 
-  this.listners = () => {
-
+  listners() {
     if (this.userOptions.arrows) {
       this.settings.next.addEventListener('click', () => {
         this.nextSlide();
       });
-  
+
       this.settings.prev.addEventListener('click', () => {
         this.prevSlide();
       });
     }
 
-    this.settings.wrapper.addEventListener('mousedown', this.touchStart);
-    this.settings.wrapper.addEventListener('mousemove', this.touchMove);
-    this.settings.wrapper.addEventListener('mouseup', this.touchEnd);
+    this.settings.wrapper.addEventListener('mousedown', this.touchStart.bind(this));
+    this.settings.wrapper.addEventListener('mousemove', this.touchMove.bind(this));
+    this.settings.wrapper.addEventListener('mouseup', this.touchEnd.bind(this));
 
     [].forEach.call(this.settings.wrapper.children, (element, index) => {
       if (this.userOptions.typeChange !== 'carousel') {
         element.style.transition = `opacity ${this.userOptions.duration}s ${this.userOptions.animation}, 
-          transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
+            transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
         if (index === this.settings.position) {
           element.classList.add(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
 
@@ -127,21 +125,21 @@ function AccmiSlider(options = {}) {
         element.classList.add(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
       }
 
-      element.addEventListener('touchstart', this.touchStart);
-      element.addEventListener('touchend', this.touchEnd);
-      element.addEventListener('touchmove', this.touchMove);
+      element.addEventListener('touchstart', this.touchStart.bind(this));
+      element.addEventListener('touchend', this.touchEnd.bind(this));
+      element.addEventListener('touchmove', this.touchMove.bind(this));
     });
   }
 
-  this.touchStart = (e) => {
+  touchStart(e) {
     this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
     this.touches.endDetect = true;
     this.settings.wrapper.style.transition = `transform 0s ${this.userOptions.animation}`;
   }
 
-  this.touchEnd = (e) => {
+  touchEnd(e) {
     const x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
-    const proc = 100 / (this.widthContainer / (this.touches.start - x)); 
+    const proc = 100 / (this.widthContainer / (this.touches.start - x));
 
     this.settings.wrapper.style.transition = `transform ${this.userOptions.duration}s ${this.userOptions.animation}`;
     this.touches.end = x;
@@ -154,18 +152,18 @@ function AccmiSlider(options = {}) {
     }
   }
 
-  this.touchMove = (e) => {
+  touchMove(e) {
     if (this.touches.endDetect) {
       const x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       const proc = 100 / (this.widthContainer / (this.touches.start - x));
-    
+
       this.touches.current = x;
 
       this.settings.wrapper.style.transform = `translate3d(${(-this.settings.position * this.proc) + (-proc)}%, 0, 0)`;
     }
   }
 
-  this.nextSlide = () => {
+  nextSlide() {
     this.typeOut(this.settings.position);
 
     const newPostition = () => {
@@ -191,7 +189,7 @@ function AccmiSlider(options = {}) {
     this.userOptions.beforeChange(this.settings.position);
   }
 
-  this.prevSlide = () => {
+  prevSlide() {
     this.typeOut(this.settings.position);
 
     const newPostition = () => {
@@ -217,7 +215,7 @@ function AccmiSlider(options = {}) {
     this.userOptions.beforeChange(this.settings.position);
   }
 
-  this.goToSlide = (index) => {
+  goToSlide(index) {
     this.settings.position = index;
     this.settings.wrapper.style.transform = `translate3d(${-this.settings.position * this.proc}%, 0, 0)`;
 
@@ -225,9 +223,9 @@ function AccmiSlider(options = {}) {
     this.userOptions.beforeChange(index);
   }
 
-  this.changesDot = () => {
+  changesDot() {
     if (!this.userOptions.dots) return;
-    
+
     [].forEach.call(this.settings.dots.children, (element, index) => {
       this.settings.dots.children[index].classList.remove('active');
 
@@ -235,23 +233,21 @@ function AccmiSlider(options = {}) {
     });
   }
 
-  this.typeIn = (index) => {
+  typeIn(index) {
     if (this.userOptions.typeChange === 'carousel') return;
 
     this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
     this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
   }
 
-  this.typeOut = (index) => {
+  typeOut(index) {
     if (this.userOptions.typeChange === 'carousel') return;
 
     this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
     this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
   }
-
-  this.init();
 }
 
-window.AccmiSlider = AccmiSlider;
-
 export default AccmiSlider;
+
+window.AccmiSlider = AccmiSlider;

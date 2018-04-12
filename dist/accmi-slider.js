@@ -3,13 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-function AccmiSlider() {
-  var _this = this;
 
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  this.init = function () {
-    _this.userOptions = {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AccmiSlider = exports.AccmiSlider = function () {
+  function AccmiSlider() {
+    var _this = this;
+
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, AccmiSlider);
+
+    this.userOptions = {
       arrows: options.arrows !== undefined ? options.arrows : true,
       duration: options.duration !== undefined ? options.duration : 0.8,
       animation: options.animation !== undefined ? options.animation : 'ease',
@@ -27,246 +34,271 @@ function AccmiSlider() {
       typeChange: options.typeChange !== undefined ? options.typeChange : 'carousel'
     };
 
-    _this.settings = {
+    this.settings = {
       main: document.querySelector('.accmi-slider'),
       wrapper: document.querySelector('.accmi-slider-wrapper'),
       position: 0,
-      maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - _this.userOptions.visibileItem
+      maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
     };
 
-    _this.settings.wrapper.style.transition = 'transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
+    this.settings.wrapper.style.transition = 'transform ' + this.userOptions.duration + 's ' + this.userOptions.animation;
 
-    _this.widthContainer = _this.settings.main.getBoundingClientRect().width;
-    _this.touches = {
+    this.widthContainer = this.settings.main.getBoundingClientRect().width;
+    this.touches = {
       start: 0,
       end: 0,
       endDetect: false,
       current: 0
     };
 
-    if (_this.userOptions.arrows) _this.addArrows();
-    if (_this.userOptions.visibileItem > 1) {
-      [].forEach.call(_this.settings.wrapper.children, function (element, index) {
+    if (this.userOptions.arrows) this.addArrows();
+    if (this.userOptions.visibileItem > 1) {
+      [].forEach.call(this.settings.wrapper.children, function (element, index) {
         element.style.flex = '0 0 ' + (100 / _this.userOptions.visibileItem - 5) + '%';
 
         if (index === _this.settings.wrapper.children.length - 1) return;
 
-        element.style.paddingRight = _this.userOptions.offsetRight + '%';
+        element.style.marginRight = _this.userOptions.offsetRight + '%';
       });
     }
 
-    if (_this.userOptions.dots) _this.addDots();
-    _this.proc = _this.userOptions.visibileItem > 1 ? _this.procInit() : 100;
-    _this.listners();
-    _this.settings.wrapper.classList.add(_this.userOptions.typeChange);
-  };
+    if (this.userOptions.dots) this.addDots();
+    this.proc = this.userOptions.visibileItem > 1 ? this.procInit() : 100;
+    this.listners();
+    this.settings.wrapper.classList.add(this.userOptions.typeChange);
+  }
 
-  this.procInit = function () {
-    var element = _this.settings.wrapper.children[0];
-    var elementWidth = element.offsetWidth;
-    var wrapperWidth = _this.settings.wrapper.offsetWidth;
+  _createClass(AccmiSlider, [{
+    key: 'procInit',
+    value: function procInit() {
+      var element = this.settings.wrapper.children[0];
+      var elementWidth = element.offsetWidth + parseInt(getComputedStyle(element).marginRight);
+      var wrapperWidth = this.settings.wrapper.offsetWidth;
 
-    return 100 / (wrapperWidth / elementWidth);
-  };
-
-  this.addDots = function () {
-    var dotsContainer = document.createElement('div');
-    var countDots = _this.settings.maxPosition + 1;
-
-    var _loop = function _loop(i) {
-      var dot = document.createElement('div');
-
-      dotsContainer.appendChild(dot);
-      dot.setAttribute('class', 'accmi-slider-dots-container-dot');
-
-      if (i === 0) dot.classList.add('active');
-
-      dot.addEventListener('click', function () {
-        _this.goToSlide(i);
-      });
-    };
-
-    for (var i = 0; i < countDots; ++i) {
-      _loop(i);
+      return 100 / (wrapperWidth / elementWidth);
     }
+  }, {
+    key: 'addDots',
+    value: function addDots() {
+      var _this2 = this;
 
-    dotsContainer.setAttribute('class', 'accmi-slider-dots-container');
+      var dotsContainer = document.createElement('div');
+      var countDots = this.settings.maxPosition + 1;
 
-    _this.settings.main.appendChild(dotsContainer);
+      var _loop = function _loop(i) {
+        var dot = document.createElement('div');
 
-    _this.settings.dots = dotsContainer;
-  };
+        dotsContainer.appendChild(dot);
+        dot.setAttribute('class', 'accmi-slider-dots-container-dot');
 
-  this.addArrows = function () {
-    var prev = document.createElement('div');
-    var next = document.createElement('div');
+        if (i === 0) dot.classList.add('active');
 
-    _this.settings.main.appendChild(prev);
-    _this.settings.main.appendChild(next);
+        dot.addEventListener('click', function () {
+          _this2.goToSlide(i);
+        });
+      };
 
-    prev.setAttribute('class', 'accmi-slider-arrow-left');
-    next.setAttribute('class', 'accmi-slider-arrow-right');
+      for (var i = 0; i < countDots; ++i) {
+        _loop(i);
+      }
 
-    prev.classList.add(_this.userOptions.arrowLeftClass);
-    next.classList.add(_this.userOptions.arrowRightClass);
+      dotsContainer.setAttribute('class', 'accmi-slider-dots-container');
 
-    _this.settings.prev = prev;
-    _this.settings.next = next;
-  };
+      this.settings.main.appendChild(dotsContainer);
 
-  this.listners = function () {
+      this.settings.dots = dotsContainer;
+    }
+  }, {
+    key: 'addArrows',
+    value: function addArrows() {
+      var prev = document.createElement('div');
+      var next = document.createElement('div');
 
-    if (_this.userOptions.arrows) {
-      _this.settings.next.addEventListener('click', function () {
-        _this.nextSlide();
-      });
+      this.settings.main.appendChild(prev);
+      this.settings.main.appendChild(next);
 
-      _this.settings.prev.addEventListener('click', function () {
-        _this.prevSlide();
+      prev.setAttribute('class', 'accmi-slider-arrow-left');
+      next.setAttribute('class', 'accmi-slider-arrow-right');
+
+      prev.classList.add(this.userOptions.arrowLeftClass);
+      next.classList.add(this.userOptions.arrowRightClass);
+
+      this.settings.prev = prev;
+      this.settings.next = next;
+    }
+  }, {
+    key: 'listners',
+    value: function listners() {
+      var _this3 = this;
+
+      if (this.userOptions.arrows) {
+        this.settings.next.addEventListener('click', function () {
+          _this3.nextSlide();
+        });
+
+        this.settings.prev.addEventListener('click', function () {
+          _this3.prevSlide();
+        });
+      }
+
+      this.settings.wrapper.addEventListener('mousedown', this.touchStart.bind(this));
+      this.settings.wrapper.addEventListener('mousemove', this.touchMove.bind(this));
+      this.settings.wrapper.addEventListener('mouseup', this.touchEnd.bind(this));
+
+      [].forEach.call(this.settings.wrapper.children, function (element, index) {
+        if (_this3.userOptions.typeChange !== 'carousel') {
+          element.style.transition = 'opacity ' + _this3.userOptions.duration + 's ' + _this3.userOptions.animation + ', \n            transform ' + _this3.userOptions.duration + 's ' + _this3.userOptions.animation;
+          if (index === _this3.settings.position) {
+            element.classList.add(_this3.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+
+            return;
+          }
+
+          element.classList.add(_this3.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+        }
+
+        element.addEventListener('touchstart', _this3.touchStart.bind(_this3));
+        element.addEventListener('touchend', _this3.touchEnd.bind(_this3));
+        element.addEventListener('touchmove', _this3.touchMove.bind(_this3));
       });
     }
+  }, {
+    key: 'touchStart',
+    value: function touchStart(e) {
+      this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
+      this.touches.endDetect = true;
+      this.settings.wrapper.style.transition = 'transform 0s ' + this.userOptions.animation;
+    }
+  }, {
+    key: 'touchEnd',
+    value: function touchEnd(e) {
+      var x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
+      var proc = 100 / (this.widthContainer / (this.touches.start - x));
 
-    _this.settings.wrapper.addEventListener('mousedown', _this.touchStart);
-    _this.settings.wrapper.addEventListener('mousemove', _this.touchMove);
-    _this.settings.wrapper.addEventListener('mouseup', _this.touchEnd);
+      this.settings.wrapper.style.transition = 'transform ' + this.userOptions.duration + 's ' + this.userOptions.animation;
+      this.touches.end = x;
+      this.touches.endDetect = false;
 
-    [].forEach.call(_this.settings.wrapper.children, function (element, index) {
-      if (_this.userOptions.typeChange !== 'carousel') {
-        element.style.transition = 'opacity ' + _this.userOptions.duration + 's ' + _this.userOptions.animation + ', \n          transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
-        if (index === _this.settings.position) {
-          element.classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+      if (Math.abs(proc) > 20) {
+        proc > 0 ? this.nextSlide() : this.prevSlide();
+      } else {
+        this.settings.wrapper.style.transform = 'translate3d(' + -this.settings.position * this.proc + '%, 0, 0)';
+      }
+    }
+  }, {
+    key: 'touchMove',
+    value: function touchMove(e) {
+      if (this.touches.endDetect) {
+        var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
+        var proc = 100 / (this.widthContainer / (this.touches.start - x));
+
+        this.touches.current = x;
+
+        this.settings.wrapper.style.transform = 'translate3d(' + (-this.settings.position * this.proc + -proc) + '%, 0, 0)';
+      }
+    }
+  }, {
+    key: 'nextSlide',
+    value: function nextSlide() {
+      var _this4 = this;
+
+      this.typeOut(this.settings.position);
+
+      var newPostition = function newPostition() {
+        if (_this4.userOptions.infinity) {
+          _this4.settings.position = _this4.settings.position >= _this4.settings.maxPosition ? 0 : ++_this4.settings.position;
 
           return;
         }
 
-        element.classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
-      }
+        _this4.settings.position = _this4.settings.position >= _this4.settings.maxPosition ? _this4.settings.position : ++_this4.settings.position;
+      };
 
-      element.addEventListener('touchstart', _this.touchStart);
-      element.addEventListener('touchend', _this.touchEnd);
-      element.addEventListener('touchmove', _this.touchMove);
-    });
-  };
+      newPostition();
 
-  this.touchStart = function (e) {
-    _this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
-    _this.touches.endDetect = true;
-    _this.settings.wrapper.style.transition = 'transform 0s ' + _this.userOptions.animation;
-  };
+      var transform = function transform() {
+        _this4.settings.wrapper.style.transform = 'translate3d(' + -_this4.settings.position * _this4.proc + '%, 0, 0)';
+        _this4.typeIn(_this4.settings.position);
+      };
 
-  this.touchEnd = function (e) {
-    var x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
-    var proc = 100 / (_this.widthContainer / (_this.touches.start - x));
+      this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, this.userOptions.duration * 1000) : transform();
 
-    _this.settings.wrapper.style.transition = 'transform ' + _this.userOptions.duration + 's ' + _this.userOptions.animation;
-    _this.touches.end = x;
-    _this.touches.endDetect = false;
-
-    if (Math.abs(proc) > 20) {
-      proc > 0 ? _this.nextSlide() : _this.prevSlide();
-    } else {
-      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
+      this.changesDot();
+      this.userOptions.beforeChange(this.settings.position);
     }
-  };
+  }, {
+    key: 'prevSlide',
+    value: function prevSlide() {
+      var _this5 = this;
 
-  this.touchMove = function (e) {
-    if (_this.touches.endDetect) {
-      var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
-      var proc = 100 / (_this.widthContainer / (_this.touches.start - x));
+      this.typeOut(this.settings.position);
 
-      _this.touches.current = x;
+      var newPostition = function newPostition() {
+        if (_this5.userOptions.infinity) {
+          _this5.settings.position = _this5.settings.position <= 0 ? _this5.settings.maxPosition : --_this5.settings.position;
 
-      _this.settings.wrapper.style.transform = 'translate3d(' + (-_this.settings.position * _this.proc + -proc) + '%, 0, 0)';
+          return;
+        }
+
+        _this5.settings.position = _this5.settings.position <= 0 ? _this5.settings.position : --_this5.settings.position;
+      };
+
+      newPostition();
+
+      var transform = function transform() {
+        _this5.settings.wrapper.style.transform = 'translate3d(' + -_this5.settings.position * _this5.proc + '%, 0, 0)';
+        _this5.typeIn(_this5.settings.position);
+      };
+
+      this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, this.userOptions.duration * 1000) : transform();
+
+      this.changesDot();
+      this.userOptions.beforeChange(this.settings.position);
     }
-  };
+  }, {
+    key: 'goToSlide',
+    value: function goToSlide(index) {
+      this.settings.position = index;
+      this.settings.wrapper.style.transform = 'translate3d(' + -this.settings.position * this.proc + '%, 0, 0)';
 
-  this.nextSlide = function () {
-    _this.typeOut(_this.settings.position);
+      this.changesDot();
+      this.userOptions.beforeChange(index);
+    }
+  }, {
+    key: 'changesDot',
+    value: function changesDot() {
+      var _this6 = this;
 
-    var newPostition = function newPostition() {
-      if (_this.userOptions.infinity) {
-        _this.settings.position = _this.settings.position >= _this.settings.maxPosition ? 0 : ++_this.settings.position;
+      if (!this.userOptions.dots) return;
 
-        return;
-      }
+      [].forEach.call(this.settings.dots.children, function (element, index) {
+        _this6.settings.dots.children[index].classList.remove('active');
 
-      _this.settings.position = _this.settings.position >= _this.settings.maxPosition ? _this.settings.position : ++_this.settings.position;
-    };
+        if (index === _this6.settings.position) _this6.settings.dots.children[index].classList.add('active');
+      });
+    }
+  }, {
+    key: 'typeIn',
+    value: function typeIn(index) {
+      if (this.userOptions.typeChange === 'carousel') return;
 
-    newPostition();
+      this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+      this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+    }
+  }, {
+    key: 'typeOut',
+    value: function typeOut(index) {
+      if (this.userOptions.typeChange === 'carousel') return;
 
-    var transform = function transform() {
-      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
-      _this.typeIn(_this.settings.position);
-    };
+      this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
+      this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+    }
+  }]);
 
-    _this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, _this.userOptions.duration * 1000) : transform();
-
-    _this.changesDot();
-    _this.userOptions.beforeChange(_this.settings.position);
-  };
-
-  this.prevSlide = function () {
-    _this.typeOut(_this.settings.position);
-
-    var newPostition = function newPostition() {
-      if (_this.userOptions.infinity) {
-        _this.settings.position = _this.settings.position <= 0 ? _this.settings.maxPosition : --_this.settings.position;
-
-        return;
-      }
-
-      _this.settings.position = _this.settings.position <= 0 ? _this.settings.position : --_this.settings.position;
-    };
-
-    newPostition();
-
-    var transform = function transform() {
-      _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
-      _this.typeIn(_this.settings.position);
-    };
-
-    _this.userOptions.typeChange !== 'carousel' ? setTimeout(transform, _this.userOptions.duration * 1000) : transform();
-
-    _this.changesDot();
-    _this.userOptions.beforeChange(_this.settings.position);
-  };
-
-  this.goToSlide = function (index) {
-    _this.settings.position = index;
-    _this.settings.wrapper.style.transform = 'translate3d(' + -_this.settings.position * _this.proc + '%, 0, 0)';
-
-    _this.changesDot();
-    _this.userOptions.beforeChange(index);
-  };
-
-  this.changesDot = function () {
-    if (!_this.userOptions.dots) return;
-
-    [].forEach.call(_this.settings.dots.children, function (element, index) {
-      _this.settings.dots.children[index].classList.remove('active');
-
-      if (index === _this.settings.position) _this.settings.dots.children[index].classList.add('active');
-    });
-  };
-
-  this.typeIn = function (index) {
-    if (_this.userOptions.typeChange === 'carousel') return;
-
-    _this.settings.wrapper.children[index].classList.remove(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
-    _this.settings.wrapper.children[index].classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
-  };
-
-  this.typeOut = function (index) {
-    if (_this.userOptions.typeChange === 'carousel') return;
-
-    _this.settings.wrapper.children[index].classList.remove(_this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
-    _this.settings.wrapper.children[index].classList.add(_this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
-  };
-
-  this.init();
-}
-
-window.AccmiSlider = AccmiSlider;
+  return AccmiSlider;
+}();
 
 exports.default = AccmiSlider;
+
+
+window.AccmiSlider = AccmiSlider;
