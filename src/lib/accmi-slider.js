@@ -137,12 +137,14 @@ export class AccmiSlider {
   }
 
   touchStart(e) {
+    this.scrollDisable();
     this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
     this.touches.endDetect = true;
     this.settings.wrapper.style.transition = `transform 0s ${this.userOptions.animation}`;
   }
 
   touchEnd(e) {
+    this.scrollEnabled();
     const x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
     const proc = 100 / (this.widthContainer / (this.touches.start - x));
 
@@ -158,7 +160,7 @@ export class AccmiSlider {
   }
 
   touchMove(e) {
-    if (this.touches.endDetect) {
+    if (this.touches.endDetect && this.userOptions.typeChange === 'carousel') {
       const x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       const proc = 100 / (this.widthContainer / (this.touches.start - x));
 
@@ -250,6 +252,23 @@ export class AccmiSlider {
 
     this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
     this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+  }
+
+  scrollDisable() {
+    const body = document.querySelector('body');
+    const html = document.querySelector('html');
+
+    body.style.position = 'relative';
+    body.style.overflowY = 'hidden';
+    html.style.overflowY = 'hidden';
+  }
+
+  scrollEnabled() {
+    const body = document.querySelector('body');
+    const html = document.querySelector('html');
+
+    body.style.overflowY = 'auto';
+    html.style.overflowY = 'auto';
   }
 }
 

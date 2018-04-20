@@ -50,7 +50,7 @@ npm i accmi-slider
           },
           infinity: true,
           typeChange: 'carousel'
-        });
+        }, document.querySelector('accmi-slider'));
     </script>
 ```
 
@@ -73,7 +73,7 @@ offsetRight     | number  | 0        | padding-right in % for element
 dots            | boolean | true     | enable dots (pagination)
 beforeChange    | void    | ()=>null | callback before sliding
 infinity        | boolean | false    | infinity sliding
-typeChange      | string  | carousel | type animation change (no stable)
+typeChange      | string  | carousel | type animation change (no stable) carousel | zoom | fade
 
 
 ### Methods

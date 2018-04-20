@@ -13,6 +13,7 @@ var AccmiSlider = exports.AccmiSlider = function () {
     var _this = this;
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var container = arguments[1];
 
     _classCallCheck(this, AccmiSlider);
 
@@ -37,10 +38,10 @@ var AccmiSlider = exports.AccmiSlider = function () {
     };
 
     this.settings = {
-      main: document.querySelector('.accmi-slider'),
-      wrapper: document.querySelector('.accmi-slider-wrapper'),
+      main: container,
+      wrapper: container.querySelector('.accmi-slider-wrapper'),
       position: 0,
-      maxPosition: document.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
+      maxPosition: container.querySelector('.accmi-slider-wrapper').children.length - this.userOptions.visibileItem
     };
 
     this.settings.wrapper.style.transition = 'transform ' + this.userOptions.duration + 's ' + this.userOptions.animation;
@@ -170,6 +171,7 @@ var AccmiSlider = exports.AccmiSlider = function () {
   }, {
     key: 'touchStart',
     value: function touchStart(e) {
+      this.scrollDisable();
       this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       this.touches.endDetect = true;
       this.settings.wrapper.style.transition = 'transform 0s ' + this.userOptions.animation;
@@ -177,6 +179,7 @@ var AccmiSlider = exports.AccmiSlider = function () {
   }, {
     key: 'touchEnd',
     value: function touchEnd(e) {
+      this.scrollEnabled();
       var x = e.changedTouches !== undefined ? e.changedTouches[0].clientX : e.clientX;
       var proc = 100 / (this.widthContainer / (this.touches.start - x));
 
@@ -193,7 +196,7 @@ var AccmiSlider = exports.AccmiSlider = function () {
   }, {
     key: 'touchMove',
     value: function touchMove(e) {
-      if (this.touches.endDetect) {
+      if (this.touches.endDetect && this.userOptions.typeChange === 'carousel') {
         var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
         var proc = 100 / (this.widthContainer / (this.touches.start - x));
 
@@ -297,6 +300,25 @@ var AccmiSlider = exports.AccmiSlider = function () {
 
       this.settings.wrapper.children[index].classList.remove(this.userOptions.typeChange === 'fade' ? 'fadeIn' : 'zoomIn');
       this.settings.wrapper.children[index].classList.add(this.userOptions.typeChange === 'fade' ? 'fadeOut' : 'zoomOut');
+    }
+  }, {
+    key: 'scrollDisable',
+    value: function scrollDisable() {
+      var body = document.querySelector('body');
+      var html = document.querySelector('html');
+
+      body.style.position = 'relative';
+      body.style.overflowY = 'hidden';
+      html.style.overflowY = 'hidden';
+    }
+  }, {
+    key: 'scrollEnabled',
+    value: function scrollEnabled() {
+      var body = document.querySelector('body');
+      var html = document.querySelector('html');
+
+      body.style.overflowY = 'auto';
+      html.style.overflowY = 'auto';
     }
   }]);
 
