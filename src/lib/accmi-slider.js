@@ -163,7 +163,7 @@ export class AccmiSlider {
       const x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       const proc = 100 / (this.widthContainer / (this.touches.start - x));
   
-      if (Math.abs(proc) > 15) this.scrollDisable();
+      if (Math.abs(proc) > 5) this.scrollDisable();
 
       this.touches.current = x;
 
@@ -256,20 +256,11 @@ export class AccmiSlider {
   }
 
   scrollDisable() {
-    const body = document.querySelector('body');
-    const html = document.querySelector('html');
-
-    body.style.position = 'relative';
-    body.style.overflowY = 'hidden';
-    html.style.overflowY = 'hidden';
+    document.ontouchmove = (e) => e.preventDefault();
   }
 
   scrollEnabled() {
-    const body = document.querySelector('body');
-    const html = document.querySelector('html');
-
-    body.style.overflowY = 'auto';
-    html.style.overflowY = 'auto';
+    document.ontouchmove = (e) => true;
   }
 }
 

@@ -199,7 +199,7 @@ var AccmiSlider = exports.AccmiSlider = function () {
         var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
         var proc = 100 / (this.widthContainer / (this.touches.start - x));
 
-        if (Math.abs(proc) > 15) this.scrollDisable();
+        if (Math.abs(proc) > 5) this.scrollDisable();
 
         this.touches.current = x;
 
@@ -305,21 +305,16 @@ var AccmiSlider = exports.AccmiSlider = function () {
   }, {
     key: 'scrollDisable',
     value: function scrollDisable() {
-      var body = document.querySelector('body');
-      var html = document.querySelector('html');
-
-      body.style.position = 'relative';
-      body.style.overflowY = 'hidden';
-      html.style.overflowY = 'hidden';
+      document.ontouchmove = function (e) {
+        return e.preventDefault();
+      };
     }
   }, {
     key: 'scrollEnabled',
     value: function scrollEnabled() {
-      var body = document.querySelector('body');
-      var html = document.querySelector('html');
-
-      body.style.overflowY = 'auto';
-      html.style.overflowY = 'auto';
+      document.ontouchmove = function (e) {
+        return true;
+      };
     }
   }]);
 
