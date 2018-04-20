@@ -137,7 +137,6 @@ export class AccmiSlider {
   }
 
   touchStart(e) {
-    this.scrollDisable();
     this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
     this.touches.endDetect = true;
     this.settings.wrapper.style.transition = `transform 0s ${this.userOptions.animation}`;
@@ -163,6 +162,8 @@ export class AccmiSlider {
     if (this.touches.endDetect && this.userOptions.typeChange === 'carousel') {
       const x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       const proc = 100 / (this.widthContainer / (this.touches.start - x));
+  
+      if (Math.abs(proc) > 15) this.scrollDisable();
 
       this.touches.current = x;
 

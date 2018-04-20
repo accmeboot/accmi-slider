@@ -171,7 +171,6 @@ var AccmiSlider = exports.AccmiSlider = function () {
   }, {
     key: 'touchStart',
     value: function touchStart(e) {
-      this.scrollDisable();
       this.touches.start = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
       this.touches.endDetect = true;
       this.settings.wrapper.style.transition = 'transform 0s ' + this.userOptions.animation;
@@ -199,6 +198,8 @@ var AccmiSlider = exports.AccmiSlider = function () {
       if (this.touches.endDetect && this.userOptions.typeChange === 'carousel') {
         var x = e.touches !== undefined ? e.touches[0].clientX : e.clientX;
         var proc = 100 / (this.widthContainer / (this.touches.start - x));
+
+        if (Math.abs(proc) > 15) this.scrollDisable();
 
         this.touches.current = x;
 
