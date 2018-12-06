@@ -93,7 +93,7 @@ const configDev = {
     hot: true,
     inline: true,
     historyApiFallback: true,
-    host: '192.168.0.102',
+    host: 'localhost',
     port: 9093,
     stats: {
       assets: true,

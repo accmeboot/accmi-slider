@@ -1,7 +1,7 @@
 import './index.scss';
 import './lib/accmi-slider.scss';
 
-import AccmiSlider from './lib/accmi-slider';
+import AccmiSlider from '../dist/accmi-slider';
 
 const Slider = new AccmiSlider({
   visibileItem: 1,
