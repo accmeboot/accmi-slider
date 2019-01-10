@@ -265,7 +265,3 @@ export class AccmiSlider {
 }
 
 export default AccmiSlider;
-
-if (window) {
-  window.AccmiSlider = AccmiSlider;
-}
